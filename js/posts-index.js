@@ -25,7 +25,10 @@
 
     a.innerHTML = `
       <div class="post-row">
-        <div class="post-row__meta">${escapeHtml(category.label)} &middot; ${formatDate(post.date)}</div>
+        <div class="post-row__meta">
+          <div class="post-row__category">${escapeHtml(category.label)}</div>
+          <time class="post-row__date">${formatDate(post.date)}</time>
+        </div>
         <div>
           <div class="post-row__title">${escapeHtml(post.title)}</div>
           <div class="post-row__summary">${escapeHtml(post.summary)}</div>
