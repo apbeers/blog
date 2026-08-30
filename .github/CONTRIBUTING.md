@@ -11,15 +11,14 @@ If you're not using Claude Code, everything below is a plain manual process too.
 
 ## How a post is structured
 
-Every post lives in its own folder under `posts/`:
+Every post is a **single Markdown file** under `posts/<category>/` — no accompanying HTML file:
 
 ```
-posts/2026-08-30-welcome-to-the-blog/
-  content.md      <- the actual article: frontmatter + hand-written Markdown body
-  index.html      <- a small boilerplate shell (do not hand-edit the prose here)
+posts/milestone/2026-08-30-welcome-to-the-blog.md
 ```
 
-`content.md` starts with a frontmatter block, then the article body:
+The category is which folder the post lives in. The file starts with a frontmatter block, then
+the article body:
 
 ```
 ---
@@ -33,49 +32,50 @@ author: abeers
 The article body goes here, written in Markdown.
 ```
 
-- **title** — plain text, shown as the page `<title>` and the homepage list title.
+- **title** — plain text, shown as the page `<title>` (once the post loads) and the homepage
+  list title.
 - **date** — `YYYY-MM-DD`.
 - **summary** — plain text, one or two sentences. Shown on the homepage and used as the
   `<meta name="description">` for search engines.
-- **category** — must be one of the ids in [`data/categories.json`](../data/categories.json).
-  Add a new category there first if you need one.
+- **category** — must be one of the ids in [`data/categories.json`](../data/categories.json), and
+  must match the folder the file is actually in (`posts/<category>/`). Add a new category there
+  first if you need one.
 - **author** — must be an id in [`data/authors.json`](../data/authors.json). Add yourself there
   first if you're a new contributor (`{ "id": { "name": "...", "bio": "..." } }`).
 
-### The `index.html` shell
+### The shared `post.html` page
 
-`index.html` next to `content.md` is boilerplate: it has real `<title>`/`<meta description>`/
-Open Graph tags/JSON-LD copied from the frontmatter above, so search engines and other crawlers
-that don't execute JavaScript still see the correct title, summary, author, and date for the post.
-The actual body text is never in this file — it's always rendered client-side from `content.md`
-by `js/post-render.js`. Copy it from [`templates/post-template.html`](../templates/post-template.html)
-(the `/new-post` command does this for you) and fill in the `{{PLACEHOLDER}}` values. If you edit
-the title/summary/date/category/author in `content.md` after the post is created, update the
-matching values in `index.html` too (`/publish-post` checks this for you).
+There is one `post.html` at the site root that every post is viewed through:
+`post.html?category=<category>&slug=<slug>`. It reads the category/slug from the URL, fetches
+`posts/<category>/<slug>.md`, and renders the byline, article body, and table of contents — and
+also sets the page's `<title>`, `<meta description>`, Open Graph tags, and JSON-LD from the
+post's frontmatter, all at runtime (see `js/post-render.js`). You never create or edit an HTML
+file per post — `post.html` itself is shared infrastructure, not something to copy.
 
 ### The homepage list (`posts/manifest.json`)
 
-GitHub Pages has no way for the homepage's JavaScript to discover post folders on its own, so
-`posts/manifest.json` is a small index the homepage reads: one entry per post with its slug and
-frontmatter fields duplicated in. `/new-post` adds the entry for you; `/publish-post` verifies it
-matches the post's `content.md` before merging.
+GitHub Pages has no way for the homepage's JavaScript to discover post files on its own, so
+`posts/manifest.json` is a small index the homepage reads: one entry per post with its slug,
+category, and other frontmatter fields duplicated in. `/new-post` adds the entry for you;
+`/publish-post` verifies it matches the post's frontmatter before merging.
 
 ### Images
 
-Put per-post images under `assets/posts/<slug>/` and reference them from `content.md` with normal
-Markdown image syntax: `![Alt text](../../assets/posts/<slug>/diagram.png)`.
+Put per-post images under `assets/posts/<slug>/` and reference them from the post with normal
+Markdown image syntax, root-relative since `post.html` lives at the site root:
+`![Alt text](assets/posts/<slug>/diagram.png)`.
 
 ## Adding a post
 
 Use `/new-post` in Claude Code, or do it by hand:
 
 1. Pick a slug: `YYYY-MM-DD-short-title`.
-2. `mkdir posts/<slug>` and copy `templates/content-template.md` to `posts/<slug>/content.md`;
-   fill in the frontmatter and write the body.
-3. Copy `templates/post-template.html` to `posts/<slug>/index.html`; fill in the
-   `{{PLACEHOLDER}}` values from the frontmatter (escape any `"` inside the JSON-LD block).
-4. Add an entry to `posts/manifest.json`.
-5. Add `<url>` entries to `sitemap.xml` for the new post.
+2. `mkdir -p posts/<category>` (if it doesn't exist yet) and copy
+   `templates/post-template.md` to `posts/<category>/<slug>.md`; fill in the frontmatter and
+   write the body.
+3. Add an entry to `posts/manifest.json`.
+4. Add a `<url>` entry to `sitemap.xml` for
+   `post.html?category=<category>&slug=<slug>`.
 
 Then use `/review-post` for an editorial pass, and `/publish-post` when it's ready to merge.
 
@@ -115,11 +115,14 @@ Then open `http://localhost:8000/`.
 ## A note on search/AI-agent indexing
 
 Because content is intentionally hand-written and rendered client-side rather than pre-built,
-crawlers that execute JavaScript (Google's indexer does) will see the full rendered article.
-Crawlers that fetch HTML only and never run JavaScript will still see a correct title, summary,
-author, date, and canonical URL for every post (from the `index.html` shell described above), but
-not the rendered article body. This is a deliberate tradeoff for keeping the site build-free and
-dependency-free — not an oversight.
+crawlers that execute JavaScript (Google's indexer does) will see the full rendered article, real
+title, and description — `js/post-render.js` sets all of that at runtime. Crawlers that fetch
+HTML only and never run JavaScript will only see `post.html`'s generic default title/description,
+not anything specific to the post being viewed. This is the tradeoff of every post being a single
+Markdown file with no per-post HTML: it's simpler to author and maintain, at the cost of
+metadata visibility to non-JS crawlers. `sitemap.xml` still lists every post's URL, so it can
+still be discovered and crawled — just not with rich per-post metadata for crawlers that skip
+JavaScript.
 
 ## GitHub Pages setup
 

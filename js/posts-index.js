@@ -21,7 +21,7 @@
   function renderRow(post, categories) {
     const category = categories[post.category] || { label: post.category };
     const a = document.createElement("a");
-    a.href = `posts/${post.slug}/index.html`;
+    a.href = `post.html?category=${encodeURIComponent(post.category)}&slug=${encodeURIComponent(post.slug)}`;
 
     a.innerHTML = `
       <div class="post-row">

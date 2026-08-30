@@ -18,14 +18,13 @@ plumbing — folder scaffolding, metadata, and publishing — never the words th
 
 ## What a post looks like
 
-Every post is a folder under `posts/` with two files:
-
-- `content.md` — frontmatter (title, date, summary, category, author) plus the article body,
-  written by hand.
-- `index.html` — a small boilerplate shell with real `<title>` and `<meta>` tags, so search
-  engines see correct metadata even without running JavaScript.
+Every post is a single Markdown file under `posts/<category>/`, e.g.
+`posts/milestone/2026-08-30-welcome-to-the-blog.md` — this file. It starts with a frontmatter
+block (title, date, summary, category, author), then the article body, written by hand. There's
+no HTML file alongside it.
 
 > The article body itself — everything you're reading right now — is rendered by
-> `js/markdown.js`, a small hand-rolled parser with no dependencies.
+> `js/markdown.js`, a small hand-rolled parser with no dependencies, into the shared `post.html`
+> page that every post is viewed through.
 
 Headings like the ones above automatically populate the table of contents on the left.

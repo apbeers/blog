@@ -7,11 +7,13 @@ structural changes. Summary of the non-negotiable rules:
 - **Posts are hand-written Markdown**, parsed into HTML in the browser at load time
   (`js/markdown.js`, `js/frontmatter.js`, `js/post-render.js`). Never auto-generate or rewrite
   the body of a post.
-- Each post is a folder `posts/<slug>/` with `content.md` (frontmatter + hand-written body) and
-  `index.html` (a boilerplate meta-tag shell — copied from `templates/post-template.html`, never
-  hand-edited for prose). `posts/manifest.json` indexes all posts for the homepage.
+- **A post is a single file**, `posts/<category>/<slug>.md` (frontmatter + hand-written body) —
+  no accompanying HTML file. Every post is viewed through the one shared `post.html` at the site
+  root (`post.html?category=<category>&slug=<slug>`), which sets `<title>`/meta tags and renders
+  the body at runtime. `posts/manifest.json` indexes all posts for the homepage.
 - Categories and authors are shared registries: `data/categories.json`, `data/authors.json`.
-  Post frontmatter references them by id.
+  Post frontmatter references them by id, and a post's category id must match the folder
+  (`posts/<category>/`) it lives in.
 - Slash commands for the common workflows live in `.claude/commands/`: `/new-post`,
   `/review-post`, `/publish-post`. Prefer them over ad hoc edits so the manifest/shell/sitemap
   stay in sync.

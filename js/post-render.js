@@ -1,10 +1,12 @@
 /**
- * Article page logic. Expects the page's <body> to carry:
- *   data-root  -- relative path back to the site root, e.g. "../../"
- * and these elements to exist:
- *   #post-category, #post-title, #post-byline, #post-content, #post-toc, #post-toc-list
- * Fetches the sibling content.md (same folder as this page), parses frontmatter +
- * markdown body, and renders the byline, article body, and a heading-based TOC.
+ * Logic for the single shared post.html page. Every post is viewed as
+ * post.html?category=<id>&slug=<slug>, which maps directly to the file
+ * posts/<category>/<slug>.md -- there is no per-post HTML file.
+ *
+ * Because there's only one post.html, this also sets <title>, the meta
+ * description/OG tags, the canonical link, and the JSON-LD block in the
+ * <head> at runtime from the post's frontmatter, in addition to rendering
+ * the byline, article body, and heading-based TOC into the page.
  */
 (function () {
   function escapeHtml(str) {
@@ -19,10 +21,6 @@
     const d = new Date(`${dateStr}T00:00:00`);
     if (Number.isNaN(d.getTime())) return dateStr;
     return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-  }
-
-  function rootPath() {
-    return document.body.getAttribute("data-root") || "";
   }
 
   function buildToc(tocListEl, contentEl) {
@@ -41,6 +39,43 @@
     });
   }
 
+  function updateHeadMeta({ title, summary, date, authorName, url }) {
+    document.title = title;
+
+    const description = document.querySelector('meta[name="description"]');
+    if (description) description.setAttribute("content", summary);
+
+    const canonical = document.getElementById("meta-canonical");
+    if (canonical) canonical.setAttribute("href", url);
+
+    const ogTitle = document.getElementById("meta-og-title");
+    if (ogTitle) ogTitle.setAttribute("content", title);
+
+    const ogDescription = document.getElementById("meta-og-description");
+    if (ogDescription) ogDescription.setAttribute("content", summary);
+
+    const ogUrl = document.getElementById("meta-og-url");
+    if (ogUrl) ogUrl.setAttribute("content", url);
+
+    const published = document.getElementById("meta-article-published");
+    if (published) published.setAttribute("content", date);
+
+    const author = document.getElementById("meta-article-author");
+    if (author) author.setAttribute("content", authorName);
+
+    const ldJson = document.getElementById("meta-ld-json");
+    if (ldJson) {
+      ldJson.textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        headline: title,
+        description: summary,
+        datePublished: date,
+        author: { "@type": "Person", name: authorName },
+      });
+    }
+  }
+
   async function init() {
     const categoryEl = document.getElementById("post-category");
     const titleEl = document.getElementById("post-title");
@@ -49,12 +84,24 @@
     const tocListEl = document.getElementById("post-toc-list");
     if (!contentEl) return;
 
+    const params = new URLSearchParams(window.location.search);
+    const categoryId = params.get("category");
+    const slug = params.get("slug");
+
+    if (!categoryId || !slug) {
+      contentEl.innerHTML =
+        '<p class="state-message">No post specified. Go back to <a href="index.html">all posts</a>.</p>';
+      return;
+    }
+
     try {
       const [mdRes, authorsRes, categoriesRes] = await Promise.all([
-        fetch("./content.md"),
-        fetch(`${rootPath()}data/authors.json`),
-        fetch(`${rootPath()}data/categories.json`),
+        fetch(`posts/${categoryId}/${slug}.md`),
+        fetch("data/authors.json"),
+        fetch("data/categories.json"),
       ]);
+
+      if (!mdRes.ok) throw new Error(`Post not found: ${categoryId}/${slug}`);
 
       const raw = await mdRes.text();
       const authors = await authorsRes.json();
@@ -62,7 +109,7 @@
 
       const { data, body } = window.BlogFrontmatter.parse(raw);
       const author = authors[data.author] || { name: data.author || "Unknown" };
-      const category = categories[data.category] || { label: data.category || "" };
+      const category = categories[data.category] || { label: data.category || categoryId };
 
       if (categoryEl) categoryEl.textContent = category.label;
       if (titleEl) titleEl.textContent = data.title || "";
@@ -73,6 +120,14 @@
           <time datetime="${escapeHtml(data.date || "")}">${formatDate(data.date || "")}</time>
         `;
       }
+
+      updateHeadMeta({
+        title: data.title || "Untitled post",
+        summary: data.summary || "",
+        date: data.date || "",
+        authorName: author.name,
+        url: `${window.location.origin}${window.location.pathname}?category=${encodeURIComponent(categoryId)}&slug=${encodeURIComponent(slug)}`,
+      });
 
       contentEl.innerHTML = window.BlogMarkdown.render(body);
       if (tocListEl) buildToc(tocListEl, contentEl);
