@@ -43,6 +43,13 @@ The article body goes here, written in Markdown.
 - **author** — must be an id in [`data/authors.json`](../data/authors.json). Add yourself there
   first if you're a new contributor (`{ "id": { "name": "...", "bio": "..." } }`).
 
+**Quote any frontmatter value that contains a colon** (e.g.
+`summary: "How this works: an explanation."`). GitHub's file preview parses this block as real
+YAML, where an unquoted `key: value` colon inside a value is read as a nested mapping and breaks
+rendering with a "mapping values are not allowed in this context" error. The site's own parser
+(`js/frontmatter.js`) also strips surrounding quotes, so quoting is safe and has no effect on the
+rendered page — just required whenever a value itself contains `: `.
+
 ### The shared `post.html` page
 
 There is one `post.html` at the site root that every post is viewed through:

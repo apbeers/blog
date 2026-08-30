@@ -1,7 +1,7 @@
 ---
 title: Welcome to the blog
 date: 2026-08-30
-summary: How this site works: hand-written Markdown posts, parsed into HTML entirely in the browser, no build step.
+summary: "How this site works: hand-written Markdown posts, parsed into HTML entirely in the browser, no build step."
 category: milestone
 author: abeers
 ---

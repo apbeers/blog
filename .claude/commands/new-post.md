@@ -35,6 +35,11 @@ Ask the user (or infer from $ARGUMENTS + conversation context, confirming before
 Derive a **slug**: `YYYY-MM-DD-kebab-case-short-title` (lowercase, hyphens, no punctuation).
 Confirm `posts/<category>/<slug>.md` doesn't already exist.
 
+If **title** or **summary** contains a colon (`: `), wrap that value in double quotes when you
+write the frontmatter in Step 2. GitHub's file preview parses frontmatter as YAML, and an
+unquoted colon inside a value breaks it with a "mapping values are not allowed" error; the site's
+own parser strips quotes safely either way.
+
 ## Step 2 — create the post file
 
 Create `posts/<category>/<slug>.md` (make the category folder if it doesn't exist yet), starting
