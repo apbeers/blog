@@ -17,8 +17,8 @@
   bar.innerHTML =
     'This page was opened directly from disk (<code>file://</code>), so the browser blocks ' +
     "the requests this site uses to load Markdown/JSON content — that's a browser security " +
-    "rule, not a bug here. Serve the repo over HTTP instead, e.g. from its root: " +
-    "<code>python3 -m http.server 8000</code>, then open <code>http://localhost:8000/</code>.";
+    "rule, not a bug here. Serve the repo over HTTP instead, from its root: " +
+    "<code>python3 serve.py</code>, then open <code>http://localhost:8000/</code>.";
 
   document.addEventListener("DOMContentLoaded", () => {
     document.body.insertBefore(bar, document.body.firstChild);

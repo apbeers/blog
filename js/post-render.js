@@ -9,12 +9,6 @@
  * the byline, article body, and heading-based TOC into the page.
  */
 (function () {
-  function formatDate(dateStr) {
-    const d = new Date(`${dateStr}T00:00:00`);
-    if (Number.isNaN(d.getTime())) return dateStr;
-    return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
-  }
-
   // The header (and, on mobile, the TOC toggle bar under it) are sticky, so
   // both scroll-spy detection and TOC-link jumps need to account for how
   // much of the viewport's top they cover -- otherwise a heading can end up
@@ -233,6 +227,10 @@
 
     const ldJson = document.getElementById("meta-ld-json");
     if (ldJson) {
+      // JSON.stringify leaves "<" raw, so a title containing "</script>" would
+      // emit a literal closing tag inside this block. Assigning via textContent
+      // means it can't execute, but the markup would still be malformed for
+      // anything that re-serialises the page.
       ldJson.textContent = JSON.stringify({
         "@context": "https://schema.org",
         "@type": "BlogPosting",
@@ -240,7 +238,7 @@
         description: summary,
         datePublished: date,
         author: { "@type": "Person", name: authorName },
-      });
+      }).replace(/</g, "\\u003c");
     }
   }
 
@@ -290,9 +288,9 @@
       if (tocTitleEl && data.title) tocTitleEl.textContent = data.title;
       if (bylineEl) {
         bylineEl.innerHTML = `
-          <span class="byline__author">${window.BlogMarkdown.escapeHtml(author.name)}</span>
+          <span class="byline__author">${window.BlogUtil.escapeHtml(author.name)}</span>
           <span aria-hidden="true">&middot;</span>
-          <time datetime="${window.BlogMarkdown.escapeHtml(data.date || "")}">${formatDate(data.date || "")}</time>
+          <time datetime="${window.BlogUtil.escapeHtml(data.date || "")}">${window.BlogUtil.formatDate(data.date || "")}</time>
         `;
       }
 

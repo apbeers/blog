@@ -1,13 +1,21 @@
 /**
- * Injects shared partials (header/footer) into any page that has the matching
- * placeholder elements. Usage: <div data-include="header"></div>
- * Path is relative to the page's location, so pages at different folder depths
- * pass a `data-root` attribute on <body> (e.g. data-root="../../") pointing back
- * to the site root.
+ * Injects the shared header/footer into any page with a matching placeholder:
+ * <div data-include="header"></div>
+ *
+ * Partials are injected with outerHTML, and the HTML spec says scripts inserted
+ * that way never execute -- so a partial CANNOT contain a working <script>.
+ * Anything a partial needs done at runtime belongs in the hydrate step below,
+ * or in its own file loaded by the page. (The footer's copyright year used to
+ * be an inline script in the partial and silently never ran.)
+ *
+ * Every page lives at the site root -- posts are all served through the single
+ * root-level post.html -- so partial paths are plain relative paths.
  */
 (function () {
-  function rootPath() {
-    return document.body.getAttribute("data-root") || "";
+  function hydrate() {
+    document.querySelectorAll("[data-current-year]").forEach((el) => {
+      el.textContent = new Date().getFullYear();
+    });
   }
 
   async function includePartials() {
@@ -16,15 +24,15 @@
       Array.from(nodes).map(async (node) => {
         const name = node.getAttribute("data-include");
         try {
-          const res = await fetch(`${rootPath()}partials/${name}.html`);
+          const res = await fetch(`partials/${name}.html`);
           if (!res.ok) throw new Error(`Failed to load partial: ${name}`);
-          const html = await res.text();
-          node.outerHTML = html.replace(/\{\{ROOT\}\}/g, rootPath());
+          node.outerHTML = await res.text();
         } catch (err) {
           console.error(err);
         }
       })
     );
+    hydrate();
     document.dispatchEvent(new CustomEvent("partials:loaded"));
   }
 

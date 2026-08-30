@@ -55,14 +55,8 @@
     warning: "Warning", caution: "Caution", danger: "Danger"
   };
 
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;")
-      .replace(/'/g, "&#39;");
-  }
+  // Shared with the homepage; see js/util.js, which must load before this file.
+  var escapeHtml = global.BlogUtil.escapeHtml;
 
   // Only allow URLs that can't execute script. Anything else becomes "#".
   function safeUrl(url) {
@@ -103,6 +97,20 @@
 
   // --- inline --------------------------------------------------------------
 
+  // The passes below run in a deliberate order. These constraints are
+  // load-bearing -- reordering them reintroduces real bugs:
+  //
+  //   1. code spans     first, so nothing inside `...` is reinterpreted
+  //   2. hard breaks    before escapes, or a trailing "\" is eaten as an escape
+  //   3. autolinks      before escaping, while <...> is still recognisable
+  //   4. footnote refs  before superscript, or [^1]...[^2] is read as ^...^
+  //   5. images/links   before backslash escapes, so \[ is not read as a link
+  //   6. backslash      before emphasis, or \* becomes a tag instead of a "*"
+  //   7. ~~ before ~    and ** before *, so the longer marker wins
+  //   8. escapeHtml     last, over everything still in the stream
+  //
+  // Anything that must not be reparsed is held whole and pre-escaped; anything
+  // that wraps content holds only its tags, leaving the text in the stream.
   function renderInline(text) {
     var slots = [];
     // Hold a finished HTML fragment; returns a token that no later pass matches.
@@ -725,5 +733,5 @@
     return html + renderFootnotes();
   }
 
-  global.BlogMarkdown = { render, escapeHtml, slugify };
+  global.BlogMarkdown = { render };
 })(window);

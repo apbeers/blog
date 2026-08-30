@@ -14,13 +14,16 @@
   <meta property="og:url" content="https://apbeers.github.io/blog/">
   <meta name="twitter:card" content="summary">
 
+  <!-- Keep this stylesheet list in sync with post.html, which repeats it
+       (plus post.css). Two files, no build step: inlining them from JS
+       instead would flash unstyled content on every load. -->
   <link rel="stylesheet" href="css/variables.css">
   <link rel="stylesheet" href="css/reset.css">
   <link rel="stylesheet" href="css/typography.css">
   <link rel="stylesheet" href="css/layout.css">
   <link rel="stylesheet" href="css/components.css">
 </head>
-<body data-root="">
+<body>
   <div data-include="header"></div>
 
   <main class="container">
@@ -36,7 +39,7 @@
 
   <script src="js/dev-server-notice.js"></script>
   <script src="js/include-partials.js"></script>
-  <script src="js/markdown.js"></script>
+  <script src="js/util.js"></script>
   <script src="js/sticky-header.js"></script>
   <script src="js/theme-toggle.js"></script>
   <script src="js/posts-index.js"></script>

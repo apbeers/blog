@@ -2,13 +2,13 @@
  * Homepage logic: fetches posts/manifest.json + data/categories.json, renders the
  * post list (newest first) and the category filter tabs. Expects these elements
  * to exist on the page: #filter-tabs, #post-list.
+ *
+ * Note this page does NOT load js/markdown.js -- the homepage only ever shows
+ * frontmatter fields, never rendered Markdown, so it has no reason to pull in
+ * the parser.
  */
 (function () {
-  function formatDate(dateStr) {
-    const d = new Date(`${dateStr}T00:00:00`);
-    if (Number.isNaN(d.getTime())) return dateStr;
-    return d.toLocaleDateString(undefined, { year: "numeric", month: "short", day: "numeric" });
-  }
+  const esc = window.BlogUtil.escapeHtml;
 
   function renderRow(post, categories) {
     const category = categories[post.category] || { label: post.category };
@@ -18,12 +18,12 @@
     a.innerHTML = `
       <div class="post-row">
         <div class="post-row__meta">
-          <div class="post-row__category">${window.BlogMarkdown.escapeHtml(category.label)}</div>
-          <time class="post-row__date">${formatDate(post.date)}</time>
+          <div class="post-row__category">${esc(category.label)}</div>
+          <time class="post-row__date">${window.BlogUtil.formatDate(post.date, "short")}</time>
         </div>
         <div>
-          <div class="post-row__title">${window.BlogMarkdown.escapeHtml(post.title)}</div>
-          <div class="post-row__summary">${window.BlogMarkdown.escapeHtml(post.summary)}</div>
+          <div class="post-row__title">${esc(post.title)}</div>
+          <div class="post-row__summary">${esc(post.summary)}</div>
         </div>
       </div>
     `;
