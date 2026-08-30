@@ -27,6 +27,8 @@
     { id: "za", label: "Alphabetical (Z–A)" },
   ];
 
+  const PAGE_SIZE = 6;
+
   // Posts sharing a date are tie-broken on their manifest position, so
   // "Newest" keeps the order tools/sync.py indexed and "Oldest" is its exact
   // mirror. Leaving ties alone instead would make the two orders identical
@@ -41,7 +43,7 @@
 
   const cmp = (a, b) => (a < b ? -1 : a > b ? 1 : 0);
 
-  const state = { categories: new Set(), authors: new Set(), sort: "newest" };
+  const state = { categories: new Set(), authors: new Set(), sort: "newest", page: 1 };
 
   let posts = [];
   let categories = {};
@@ -99,10 +101,15 @@
       empty.className = "post-row__empty";
       empty.textContent = "No posts match these filters.";
       el.list.appendChild(empty);
+      renderPagination(0);
       return;
     }
 
-    list.forEach((post) => {
+    const pageCount = Math.ceil(list.length / PAGE_SIZE);
+    state.page = Math.min(state.page, pageCount);
+    const start = (state.page - 1) * PAGE_SIZE;
+
+    list.slice(start, start + PAGE_SIZE).forEach((post) => {
       const category = categories[post.category] || { label: post.category };
       const a = document.createElement("a");
       a.href = `post.html?category=${encodeURIComponent(post.category)}&slug=${encodeURIComponent(post.slug)}`;
@@ -119,6 +126,41 @@
         </div>
       `;
       el.list.appendChild(a);
+    });
+
+    renderPagination(list.length);
+  }
+
+  function renderPagination(total) {
+    const pageCount = Math.ceil(total / PAGE_SIZE);
+    if (pageCount <= 1) {
+      el.pagination.hidden = true;
+      el.pagination.innerHTML = "";
+      return;
+    }
+
+    el.pagination.hidden = false;
+    const pageButtons = Array.from({ length: pageCount }, (_, i) => {
+      const page = i + 1;
+      const current = page === state.page;
+      return `<button class="pagination__button${current ? " is-current" : ""}" type="button" data-page="${page}"${current ? ' aria-current="page"' : ""}>${page}</button>`;
+    }).join("");
+
+    el.pagination.innerHTML = `
+      <button class="pagination__button pagination__button--direction" type="button" data-page="${state.page - 1}"${state.page === 1 ? " disabled" : ""} aria-label="Previous page">&larr; Previous</button>
+      <span class="pagination__pages" aria-label="Pages">${pageButtons}</span>
+      <span class="pagination__status" aria-live="polite">Page ${state.page} of ${pageCount}</span>
+      <button class="pagination__button pagination__button--direction" type="button" data-page="${state.page + 1}"${state.page === pageCount ? " disabled" : ""} aria-label="Next page">Next &rarr;</button>
+    `;
+
+    el.pagination.querySelectorAll("button[data-page]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const page = Number(button.dataset.page);
+        if (!page || page === state.page) return;
+        state.page = page;
+        renderList();
+        el.pagination.querySelector(`[data-page="${page}"]`).focus();
+      });
     });
   }
 
@@ -140,6 +182,7 @@
       button.addEventListener("click", () => {
         state.categories.clear();
         if (tab.id !== "all") state.categories.add(tab.id);
+        state.page = 1;
         syncAll();
       });
       el.tabs.appendChild(button);
@@ -203,6 +246,7 @@
     el.sortPanel.addEventListener("change", (e) => {
       if (e.target.name !== "post-sort") return;
       state.sort = e.target.value;
+      state.page = 1;
       renderList();
       closePanels({ focus: true });
     });
@@ -248,6 +292,7 @@
       const set = state[facet];
       if (e.target.checked) set.add(e.target.value);
       else set.delete(e.target.value);
+      state.page = 1;
       syncTabs();
       syncFilterCount();
       renderList();
@@ -258,6 +303,7 @@
       if (!action) return;
       if (action === "clear") {
         facets.forEach((f) => state[f.key].clear());
+        state.page = 1;
         syncAll();
         return;
       }
@@ -310,12 +356,13 @@
   async function init() {
     el.tabs = document.getElementById("filter-tabs");
     el.list = document.getElementById("post-list");
+    el.pagination = document.getElementById("pagination");
     el.filterToggle = document.getElementById("filter-toggle");
     el.filterPanel = document.getElementById("filter-panel");
     el.filterCount = document.getElementById("filter-count");
     el.sortToggle = document.getElementById("sort-toggle");
     el.sortPanel = document.getElementById("sort-panel");
-    if (!el.tabs || !el.list) return;
+    if (!el.tabs || !el.list || !el.pagination) return;
 
     try {
       const [manifestRes, categoriesRes, authorsRes] = await Promise.all([

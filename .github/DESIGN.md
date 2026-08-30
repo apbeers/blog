@@ -1,6 +1,8 @@
-# Design guide
+# Stormtrooper design guide
 
-How this site looks, and the rules to follow so a new feature still looks like it belongs.
+This site's visual style is called **stormtrooper**: stark black, white, and grey with crisp,
+high-contrast hierarchy. These are the rules to follow so a new feature still looks like it
+belongs.
 Read this before adding UI. The companion doc is [CONTRIBUTING.md](CONTRIBUTING.md), which covers
 structure and workflow rather than appearance.
 
@@ -54,7 +56,7 @@ callout severity. Do not borrow them for general UI:
 Each is lightened for dark mode so it stays legible on a near-black background — if you add
 another, do the same rather than reusing the light value.
 
-## The palette is deliberately monochrome
+## Stormtrooper palette: deliberately monochrome
 
 Black, white, and greys, with hue reserved for admonitions. Meaning is carried by **weight,
 size, and spacing**, not color. A new control that introduces a brand color, a colored button, or

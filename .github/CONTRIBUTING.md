@@ -107,8 +107,8 @@ posts had a summary in the manifest that appeared nowhere in their frontmatter).
 ## Design
 
 Visual conventions — color tokens, spacing scale, type sizes, component and interaction patterns
-— live in [DESIGN.md](DESIGN.md). Read it before adding UI. Short version: the palette is
-monochrome and driven entirely by CSS custom properties, so never hardcode a color.
+— live in [DESIGN.md](DESIGN.md). Read it before adding UI. Short version: the **stormtrooper**
+palette is monochrome and driven entirely by CSS custom properties, so never hardcode a color.
 
 ## Style
 

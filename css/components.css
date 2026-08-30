@@ -303,6 +303,63 @@
   padding: var(--space-5) 0;
 }
 
+/* Homepage pagination */
+.pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: var(--space-5) 0 var(--space-2);
+}
+
+.pagination[hidden] {
+  display: none;
+}
+
+.pagination__pages {
+  display: flex;
+  gap: var(--space-1);
+}
+
+.pagination__button {
+  min-width: 2rem;
+  padding: var(--space-1) var(--space-2);
+  border: 1px solid var(--color-border);
+  border-radius: 4px;
+  background: none;
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.pagination__button:hover:not(:disabled) {
+  color: var(--color-text);
+  border-color: var(--color-border-strong);
+}
+
+.pagination__button.is-current {
+  background: var(--color-pill-bg-active);
+  border-color: var(--color-pill-bg-active);
+  color: var(--color-pill-text-active);
+  font-weight: 600;
+}
+
+.pagination__button:disabled {
+  color: var(--color-border-strong);
+  cursor: not-allowed;
+}
+
+.pagination__button--direction {
+  min-width: 0;
+}
+
+.pagination__status {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  margin-inline: var(--space-2);
+}
+
 /* Two-column rows from tablet up. No height guard here, unlike the article
    sidebar: a list row is equally happy on a short landscape phone. */
 @media (min-width: 740px) {
