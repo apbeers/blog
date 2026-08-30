@@ -110,7 +110,8 @@
   .article-toc {
     display: block;
     position: sticky;
-    top: var(--space-5);
+    top: var(--header-height);
+    left: 0;
   }
 
   .article-main {
