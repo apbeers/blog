@@ -208,6 +208,12 @@
   color: var(--color-text);
 }
 
+.toc__list a.is-active {
+  color: var(--color-text);
+  font-weight: 600;
+  border-left-color: var(--color-text);
+}
+
 .toc__list .is-sub {
   padding-left: var(--space-4);
 }

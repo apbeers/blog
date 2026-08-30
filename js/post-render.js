@@ -23,6 +23,73 @@
     return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
   }
 
+  function setupScrollSpy(headings, tocListEl) {
+    const linkByHeadingId = new Map();
+    tocListEl.querySelectorAll("a").forEach((link) => {
+      linkByHeadingId.set(link.getAttribute("href").slice(1), link);
+    });
+
+    const clearActive = () => {
+      tocListEl.querySelectorAll("a.is-active").forEach((link) => link.classList.remove("is-active"));
+    };
+
+    const setActive = (id) => {
+      clearActive();
+      const link = linkByHeadingId.get(id);
+      if (link) link.classList.add("is-active");
+    };
+
+    // The observer's trigger zone is the top 30% of the viewport (see
+    // rootMargin below). The last heading may never reach it if there isn't
+    // enough content after it to scroll further, and scrolling back above the
+    // first heading leaves nothing intersecting -- both are handled as
+    // explicit edge cases that take priority over whatever the observer last
+    // reported, since an earlier heading can otherwise stay "intersecting"
+    // and stomp these states.
+    const lastHeadingId = headings[headings.length - 1].id;
+    const isAtBottom = () =>
+      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+    const isBeforeFirstHeading = () => headings[0].getBoundingClientRect().top > window.innerHeight * 0.3;
+
+    const applyEdgeCases = () => {
+      if (isAtBottom()) {
+        setActive(lastHeadingId);
+        return true;
+      }
+      if (isBeforeFirstHeading()) {
+        clearActive();
+        return true;
+      }
+      return false;
+    };
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (applyEdgeCases()) return;
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActive(entry.target.id);
+        });
+      },
+      { rootMargin: "0px 0px -70% 0px", threshold: 0 }
+    );
+
+    headings.forEach((h) => observer.observe(h));
+
+    let ticking = false;
+    window.addEventListener(
+      "scroll",
+      () => {
+        if (ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+          applyEdgeCases();
+          ticking = false;
+        });
+      },
+      { passive: true }
+    );
+  }
+
   function buildToc(tocListEl, contentEl) {
     const headings = contentEl.querySelectorAll("h2, h3");
     if (!headings.length) {
@@ -37,6 +104,7 @@
       if (h.tagName === "H3") link.classList.add("is-sub");
       tocListEl.appendChild(link);
     });
+    setupScrollSpy(headings, tocListEl);
   }
 
   function updateHeadMeta({ title, summary, date, authorName, url }) {

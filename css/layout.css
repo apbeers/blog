@@ -83,7 +83,7 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-4);
-  padding-top: var(--space-4);
+  padding-top: var(--space-5);
   padding-bottom: var(--space-6);
 }
 
