@@ -14,7 +14,7 @@ disk (`file://...`) as a security rule — you'll see a "Could not load posts" m
 cross-origin errors in the console. Serve the folder over HTTP instead, from the repo root:
 
 ```bash
-python3 -m http.server 8000
+python3 serve.py
 ```
 
 Then open `http://localhost:8000/`. (Any static file server works — this is just the one every
