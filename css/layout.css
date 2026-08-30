@@ -54,7 +54,6 @@
 
 /* Site footer */
 .site-footer {
-  border-top: 1px solid var(--color-border);
   margin-top: var(--space-6);
 }
 
