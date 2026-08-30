@@ -111,7 +111,6 @@
     display: block;
     position: sticky;
     top: var(--header-height);
-    left: 0;
   }
 
   .article-main {
