@@ -25,16 +25,16 @@
   /* Layout */
   --page-max-width: 1400px;
   --prose-max-width: 720px;
-  --gutter: 24px;
+  --gutter: 20px;
 
   /* Spacing scale */
   --space-1: 4px;
   --space-2: 8px;
-  --space-3: 16px;
-  --space-4: 24px;
-  --space-5: 40px;
-  --space-6: 64px;
-  --space-7: 96px;
+  --space-3: 12px;
+  --space-4: 20px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 72px;
 
   /* Breakpoints (referenced in comments; media queries hardcode px per CSS spec limitations) */
   --bp-tablet: 640px;

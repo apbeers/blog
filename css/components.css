@@ -4,10 +4,10 @@
 .filter-tabs {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
+  gap: var(--space-3);
   border-bottom: 1px solid var(--color-border);
-  padding-bottom: var(--space-3);
-  margin-bottom: var(--space-2);
+  padding-bottom: var(--space-2);
+  margin-bottom: var(--space-1);
 }
 
 .filter-tabs button {
@@ -37,12 +37,12 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-1);
-  padding: var(--space-4) 0;
+  padding: var(--space-3) 0;
   border-bottom: 1px solid var(--color-border);
 }
 
 .post-row:first-child {
-  padding-top: var(--space-3);
+  padding-top: var(--space-2);
 }
 
 .post-row a {

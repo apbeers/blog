@@ -1,9 +1,10 @@
 /* Article-page-specific tweaks not covered by layout.css / typography.css / components.css. */
 
 .article-header {
-  max-width: var(--prose-max-width);
+  max-width: calc(var(--prose-max-width) + (2 * var(--gutter)));
   margin-inline: auto;
-  padding-top: var(--space-6);
+  padding-top: var(--space-5);
+  padding-inline: var(--gutter);
 }
 
 .article-header__category {
@@ -19,14 +20,14 @@
 
 @media (min-width: 1024px) {
   .article-header {
-    max-width: calc(260px + var(--space-5) + var(--prose-max-width));
-    padding-left: calc(260px + var(--space-5));
+    max-width: calc(var(--gutter) + 260px + var(--space-5) + var(--prose-max-width) + var(--gutter));
+    padding-left: calc(var(--gutter) + 260px + var(--space-5));
   }
 }
 
 @media (min-width: 1600px) {
   .article-header {
-    max-width: var(--prose-max-width);
-    padding-left: 0;
+    max-width: calc(var(--prose-max-width) + (2 * var(--gutter)));
+    padding-left: var(--gutter);
   }
 }

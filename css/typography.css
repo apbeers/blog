@@ -33,27 +33,27 @@ h4 {
 /* Prose — the rendered body of a post */
 .prose {
   font-size: 1.05rem;
-  line-height: 1.75;
+  line-height: 1.65;
   color: var(--color-text);
 }
 
 .prose > * + * {
-  margin-top: var(--space-4);
+  margin-top: var(--space-3);
 }
 
 .prose h2 {
   font-size: 1.6rem;
-  margin-top: var(--space-6);
+  margin-top: var(--space-5);
 }
 
 .prose h3 {
   font-size: 1.3rem;
-  margin-top: var(--space-5);
+  margin-top: var(--space-4);
 }
 
 .prose h2 + *,
 .prose h3 + * {
-  margin-top: var(--space-3);
+  margin-top: var(--space-2);
 }
 
 .prose p {
