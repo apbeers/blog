@@ -93,7 +93,11 @@
       renderList(listEl, posts, categories);
     } catch (err) {
       console.error(err);
-      listEl.innerHTML = '<div class="state-message">Could not load posts.</div>';
+      const hint =
+        window.location.protocol === "file:"
+          ? " You're viewing this file directly from disk — see the notice above for how to serve it locally."
+          : "";
+      listEl.innerHTML = `<div class="state-message">Could not load posts.${hint}</div>`;
     }
   }
 

@@ -78,7 +78,11 @@
       if (tocListEl) buildToc(tocListEl, contentEl);
     } catch (err) {
       console.error(err);
-      contentEl.innerHTML = '<p class="state-message">Could not load this post.</p>';
+      const hint =
+        window.location.protocol === "file:"
+          ? " You're viewing this file directly from disk — see the notice above for how to serve it locally."
+          : "";
+      contentEl.innerHTML = `<p class="state-message">Could not load this post.${hint}</p>`;
     }
   }
 

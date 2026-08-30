@@ -96,6 +96,14 @@ hardcoded color.
 
 ## Local preview
 
+**Always preview through a local HTTP server — never by double-clicking `index.html`.** Every
+page loads its content with `fetch()` (JSON manifests, a post's `content.md`, the header/footer
+partials), and browsers refuse `fetch()` on pages opened directly from disk (`file://...`) as a
+cross-origin security rule, regardless of anything in this repo's code. Opening a page that way
+shows a banner explaining this and a "could not load" message instead of the real content — that
+banner only appears under `file://` and is never visible on the deployed site (GitHub Pages
+always serves over `https://`).
+
 Any static file server works, e.g. from the repo root:
 
 ```bash
