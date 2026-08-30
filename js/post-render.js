@@ -135,10 +135,11 @@
         window.addEventListener("scrollend", resume, { once: true });
       } else {
         // Use longer timeout for smooth scrolls to account for animation duration
+        // Smooth scroll distance scales with scroll distance, so use generous timeout
         // Then use RAF to ensure DOM has settled before re-enabling scroll updates
         setTimeout(() => {
           requestAnimationFrame(resume);
-        }, smooth ? 800 : 50);
+        }, smooth ? 1200 : 50);
       }
     }
 
