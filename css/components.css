@@ -103,18 +103,18 @@
 
 /* file:// dev-mode warning banner, see js/dev-server-notice.js */
 .dev-notice {
-  background: #fff3cd;
-  color: #664d03;
+  background: var(--color-pill-bg);
+  color: var(--color-text-muted);
   font-size: 0.85rem;
   line-height: 1.5;
   text-align: center;
   padding: var(--space-2) var(--space-4);
-  border-bottom: 1px solid #ffe69c;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .dev-notice code {
   font-family: var(--font-mono);
-  background: rgba(0, 0, 0, 0.08);
+  background: var(--color-code-bg);
   padding: 0.1em 0.4em;
   border-radius: 4px;
   font-size: 0.9em;

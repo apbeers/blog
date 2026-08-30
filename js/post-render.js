@@ -9,14 +9,6 @@
  * the byline, article body, and heading-based TOC into the page.
  */
 (function () {
-  function escapeHtml(str) {
-    return String(str)
-      .replace(/&/g, "&amp;")
-      .replace(/</g, "&lt;")
-      .replace(/>/g, "&gt;")
-      .replace(/"/g, "&quot;");
-  }
-
   function formatDate(dateStr) {
     const d = new Date(`${dateStr}T00:00:00`);
     if (Number.isNaN(d.getTime())) return dateStr;
@@ -282,9 +274,9 @@
       if (titleEl) titleEl.textContent = data.title || "";
       if (bylineEl) {
         bylineEl.innerHTML = `
-          <span class="byline__author">${escapeHtml(author.name)}</span>
+          <span class="byline__author">${window.BlogMarkdown.escapeHtml(author.name)}</span>
           <span aria-hidden="true">&middot;</span>
-          <time datetime="${escapeHtml(data.date || "")}">${formatDate(data.date || "")}</time>
+          <time datetime="${window.BlogMarkdown.escapeHtml(data.date || "")}">${formatDate(data.date || "")}</time>
         `;
       }
 
