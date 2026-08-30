@@ -64,17 +64,14 @@ Categories and authors are JSON registries. Everything is discoverable from the 
 
 ## vs. Jekyll
 
-**Setup time:** Claude Blog 5 min • Jekyll 30 min
-
-**Dependencies:** Claude Blog None • Jekyll Ruby + 20+ gems
-
-**Build step:** Claude Blog None • Jekyll Required
-
-**AI-friendly:** Claude Blog Yes • Jekyll No
-
-**Long-term stability:** Claude Blog High • Jekyll Depends on gem updates
-
-**Customization:** Claude Blog Edit CSS/JS • Jekyll Learn Liquid templating
+|                     | Claude Blog  | Jekyll                  |
+|---------------------|--------------|-------------------------|
+| Setup time          | 5 min        | 30 min                  |
+| Dependencies        | None         | Ruby + 20+ gems         |
+| Build step          | None         | Required                |
+| AI-friendly         | Yes          | No                      |
+| Long-term stability | High         | Depends on gem updates  |
+| Customization       | Edit CSS/JS  | Learn Liquid templating |
 
 ## For Whom?
 
