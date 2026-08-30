@@ -87,6 +87,52 @@
   }
 }
 
+/* Dark mode toggle button (in the header) */
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  background: none;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.theme-toggle:hover {
+  border-color: var(--color-border-strong);
+}
+
+.theme-toggle__icon {
+  display: block;
+}
+
+.theme-toggle__icon--sun {
+  display: none;
+}
+
+/* Explicit dark, or system dark with no explicit light override: show sun
+   (meaning "switch to light"), matches the cascade in css/variables.css. */
+:root[data-theme="dark"] .theme-toggle__icon--moon {
+  display: none;
+}
+
+:root[data-theme="dark"] .theme-toggle__icon--sun {
+  display: block;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) .theme-toggle__icon--moon {
+    display: none;
+  }
+
+  :root:not([data-theme="light"]) .theme-toggle__icon--sun {
+    display: block;
+  }
+}
+
 /* Category pill */
 .pill {
   display: inline-flex;

@@ -85,6 +85,15 @@ Write posts yourself. This blog exists specifically so that the writing is human
 here handles folder scaffolding and metadata, never the prose. `/review-post` will comment on
 clarity and structure but will not rewrite your voice wholesale without asking first.
 
+## Dark mode
+
+The site follows the visitor's OS/browser color scheme by default. The toggle button in the
+header (`js/theme-toggle.js`) lets them override it explicitly; the choice is stored as a
+first-party `theme` cookie (not localStorage) and re-applied before first paint by
+`js/theme-init.js`. All colors live in `css/variables.css` as custom properties — a new page or
+component only needs to use `var(--color-...)` tokens to get dark mode for free, never a
+hardcoded color.
+
 ## Local preview
 
 Any static file server works, e.g. from the repo root:

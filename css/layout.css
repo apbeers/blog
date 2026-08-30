@@ -28,6 +28,12 @@
   letter-spacing: -0.01em;
 }
 
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
 .site-header__nav {
   display: flex;
   gap: var(--space-4);
