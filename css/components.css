@@ -303,15 +303,23 @@
   padding: var(--space-5) 0;
 }
 
-@media (min-width: 1024px) {
+/* Two-column rows from tablet up. No height guard here, unlike the article
+   sidebar: a list row is equally happy on a short landscape phone. */
+@media (min-width: 740px) {
   .post-row {
-    grid-template-columns: 220px minmax(0, 1fr);
+    grid-template-columns: 200px minmax(0, 1fr);
     gap: var(--space-4);
     align-items: baseline;
   }
 
   .post-row__meta {
     padding-top: 0.3em;
+  }
+}
+
+@media (min-width: 1024px) {
+  .post-row {
+    grid-template-columns: 220px minmax(0, 1fr);
   }
 }
 
@@ -493,7 +501,9 @@
   display: block;
 }
 
-@media (min-width: 1024px) {
+/* Must match the query that reveals the sidebar in layout.css, or a viewport
+   between the two would get both TOCs, or neither. */
+@media (min-width: 740px) and (min-height: 600px) {
   .mobile-toc {
     display: none;
   }

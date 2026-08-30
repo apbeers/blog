@@ -50,8 +50,15 @@
   --space-6: 48px;
   --space-7: 72px;
 
-  /* Breakpoints (referenced in comments; media queries hardcode px per CSS spec limitations) */
-  --bp-tablet: 640px;
+  /* Breakpoints (documentation only; media queries must hardcode px, since CSS
+     custom properties can't be used in a media query condition).
+     --bp-tablet is where the desktop layout begins: 740px rather than the usual
+     768 so that every iPad held vertically qualifies (the iPad mini is 744 CSS
+     px wide). Queries that reveal the full-height fixed sidebar pair it with
+     (min-height: 600px), which keeps landscape phones -- wide but very short --
+     on the mobile layout. */
+  --bp-tablet: 740px;
+  --bp-tablet-min-height: 600px;
   --bp-desktop: 1024px;
   --bp-ultrawide: 1600px;
 }

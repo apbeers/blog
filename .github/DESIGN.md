@@ -112,8 +112,16 @@ anything that must line up with the page edge.
 ## Layout
 
 - `--page-max-width: 1400px` centred, `--prose-max-width: 720px` for article text.
-- Breakpoints: `640px` (tablet), `1024px` (desktop, where the article sidebar appears),
-  `1600px` (ultrawide). Match these; don't add a fourth.
+- Breakpoints: `740px` (tablet — where the desktop layout begins), `1024px` (full desktop
+  sizing), `1600px` (ultrawide). Match these; don't add a fourth.
+- **740px, not the usual 768**, so that every iPad held vertically gets the desktop layout — the
+  narrowest is the iPad mini at 744 CSS px.
+- **Anything that reveals the full-height fixed sidebar must pair the width with
+  `(min-height: 600px)`.** A phone in landscape is also 740px+ wide but only ~400px tall, and a
+  sidebar spanning the viewport height has nowhere to go there. The height guard admits every
+  iPad in either orientation while leaving landscape phones on the mobile layout. The queries
+  showing `.article-toc` and hiding `.mobile-toc` must stay identical, or some viewport gets
+  both table-of-contents treatments, or neither.
 - **Derive positions from tokens.** A `position: fixed` element aligned to the centred container
   must compute its offset from `--page-max-width`, as `.article-toc` does — hardcoding half the
   width silently breaks alignment the moment the token changes.

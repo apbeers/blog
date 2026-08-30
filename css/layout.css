@@ -101,11 +101,22 @@
   margin-inline: auto;
 }
 
-@media (min-width: 1024px) {
+/* Tablet and up gets the desktop article layout. 740px is chosen so that every
+   iPad held vertically qualifies -- the narrowest is the iPad mini at 744 CSS
+   px -- rather than the more usual 768.
+
+   The min-height guard is what keeps that safe: a phone in landscape is also
+   740px+ wide, but only ~400px tall, and a full-height fixed sidebar has
+   nowhere to go on a screen that short. Requiring 600px of height admits every
+   iPad in either orientation while leaving landscape phones on the mobile
+   layout. Keep the two conditions together wherever this breakpoint is used. */
+@media (min-width: 740px) and (min-height: 600px) {
   .article-layout {
     grid-template-columns: minmax(0, 1fr);
     align-items: start;
-    padding-left: 280px;
+    /* Narrower gutter for the sidebar here than on a full desktop, so the prose
+       column keeps a usable measure on a ~768px-wide screen. */
+    padding-left: 220px;
   }
 
   /* The TOC is fixed, so it can't inherit the centred container's position --
@@ -118,13 +129,24 @@
     position: fixed;
     top: calc(var(--header-height) + var(--space-5));
     left: max(var(--gutter), calc(50% - var(--page-max-width) / 2 + var(--gutter)));
-    width: 260px;
+    width: 190px;
     max-height: calc(100vh - var(--header-height) - var(--space-5));
     overflow-y: auto;
   }
 
   .article-main {
     margin-inline: 0;
+  }
+}
+
+/* Full desktop: room for the sidebar at its intended width */
+@media (min-width: 1024px) and (min-height: 600px) {
+  .article-layout {
+    padding-left: 280px;
+  }
+
+  .article-toc {
+    width: 260px;
   }
 }
 
