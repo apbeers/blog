@@ -40,6 +40,14 @@
     "author": "abeers"
   },
   {
+    "slug": "2026-08-30-pagination-sample",
+    "title": "Pagination Sample Post",
+    "date": "2026-08-30",
+    "summary": "A sample post added to demonstrate the homepage pagination controls.",
+    "category": "milestone",
+    "author": "abeers"
+  },
+  {
     "slug": "2026-08-30-how-this-blog-works",
     "title": "How this blog works",
     "date": "2026-08-30",

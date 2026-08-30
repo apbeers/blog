@@ -341,9 +341,9 @@
 }
 
 .pagination__button.is-current {
-  background: var(--color-pill-bg-active);
-  border-color: var(--color-pill-bg-active);
-  color: var(--color-pill-text-active);
+  background: var(--color-code-bg);
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
   font-weight: 600;
 }
 
