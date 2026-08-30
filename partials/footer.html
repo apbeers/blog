@@ -1,0 +1,12 @@
+<footer class="site-footer">
+  <div class="site-footer__inner">
+    <span>&copy; <span data-current-year></span></span>
+    <a href="{{ROOT}}index.html">All posts</a>
+  </div>
+</footer>
+<script>
+  (function () {
+    var el = document.querySelector("[data-current-year]");
+    if (el) el.textContent = new Date().getFullYear();
+  })();
+</script>

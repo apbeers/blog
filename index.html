@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Blog</title>
+  <meta name="description" content="Notes and writing, published as hand-written Markdown.">
+  <link rel="canonical" href="https://apbeers.github.io/blog/">
+
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Blog">
+  <meta property="og:description" content="Notes and writing, published as hand-written Markdown.">
+  <meta property="og:url" content="https://apbeers.github.io/blog/">
+  <meta name="twitter:card" content="summary">
+
+  <link rel="stylesheet" href="css/variables.css">
+  <link rel="stylesheet" href="css/reset.css">
+  <link rel="stylesheet" href="css/typography.css">
+  <link rel="stylesheet" href="css/layout.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body data-root="">
+  <div data-include="header"></div>
+
+  <main class="container">
+    <section class="page-hero">
+      <h1 class="page-title">Blog</h1>
+    </section>
+
+    <div id="filter-tabs" class="filter-tabs" role="tablist" aria-label="Filter posts by category"></div>
+    <div id="post-list" class="post-list"></div>
+  </main>
+
+  <div data-include="footer"></div>
+
+  <script src="js/include-partials.js"></script>
+  <script src="js/posts-index.js"></script>
+</body>
+</html>

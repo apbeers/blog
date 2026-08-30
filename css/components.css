@@ -1,0 +1,167 @@
+/* Reusable UI pieces: filter tabs, post list rows, pills, byline, TOC. */
+
+/* Category filter tabs (homepage) */
+.filter-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+  padding-bottom: var(--space-3);
+  margin-bottom: var(--space-2);
+}
+
+.filter-tabs button {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.filter-tabs button.is-active {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.filter-tabs button:hover {
+  color: var(--color-text);
+}
+
+/* Post list (homepage) */
+.post-list {
+  display: block;
+}
+
+.post-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-1);
+  padding: var(--space-4) 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.post-row:first-child {
+  padding-top: var(--space-3);
+}
+
+.post-row a {
+  display: block;
+}
+
+.post-row__meta {
+  color: var(--color-text-muted);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.post-row__title {
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  margin-top: var(--space-1);
+}
+
+.post-row__summary {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin-top: var(--space-1);
+  max-width: 720px;
+}
+
+.post-row__empty {
+  color: var(--color-text-muted);
+  padding: var(--space-5) 0;
+}
+
+@media (min-width: 1024px) {
+  .post-row {
+    grid-template-columns: 220px minmax(0, 1fr);
+    gap: var(--space-4);
+    align-items: baseline;
+  }
+
+  .post-row__meta {
+    padding-top: 0.3em;
+  }
+}
+
+/* Category pill */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: var(--space-1) var(--space-2);
+  border-radius: 999px;
+  background: var(--color-pill-bg);
+  color: var(--color-pill-text);
+  font-size: 0.8rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+/* Byline on article pages */
+.byline {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+  margin-top: var(--space-3);
+}
+
+.byline__author a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* Table of contents */
+.toc__title {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+.toc__list {
+  border-left: 1px solid var(--color-border);
+}
+
+.toc__list a {
+  display: block;
+  padding: var(--space-1) 0 var(--space-1) var(--space-3);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+}
+
+.toc__list a:hover {
+  color: var(--color-text);
+}
+
+.toc__list .is-sub {
+  padding-left: var(--space-4);
+}
+
+/* Buttons / links */
+.button-link {
+  display: inline-block;
+  font-size: 0.95rem;
+  color: var(--color-text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.button-link:hover {
+  color: var(--color-text);
+}
+
+/* Loading / error states rendered by JS before content arrives */
+.state-message {
+  color: var(--color-text-muted);
+  padding: var(--space-5) 0;
+}

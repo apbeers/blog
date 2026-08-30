@@ -1,0 +1,8 @@
+{
+  "research": { "label": "Research" },
+  "publication": { "label": "Publication" },
+  "milestone": { "label": "Milestone" },
+  "release": { "label": "Release" },
+  "company": { "label": "Company" },
+  "security": { "label": "Security" }
+}

@@ -1,0 +1,131 @@
+/* Base typography, plus rules for markdown-rendered article prose (.prose). */
+body {
+  font-family: var(--font-sans);
+  color: var(--color-text);
+  background: var(--color-bg);
+  font-size: 17px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  line-height: 1.2;
+}
+
+.page-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+/* Prose — the rendered body of a post */
+.prose {
+  font-size: 1.05rem;
+  line-height: 1.75;
+  color: var(--color-text);
+}
+
+.prose > * + * {
+  margin-top: var(--space-4);
+}
+
+.prose h2 {
+  font-size: 1.6rem;
+  margin-top: var(--space-6);
+}
+
+.prose h3 {
+  font-size: 1.3rem;
+  margin-top: var(--space-5);
+}
+
+.prose h2 + *,
+.prose h3 + * {
+  margin-top: var(--space-3);
+}
+
+.prose p {
+  color: var(--color-text);
+}
+
+.prose a {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.prose a:hover {
+  color: var(--color-text-muted);
+}
+
+.prose strong {
+  font-weight: 600;
+}
+
+.prose em {
+  font-style: italic;
+}
+
+.prose ul,
+.prose ol {
+  padding-left: 1.4em;
+}
+
+.prose ul {
+  list-style: disc;
+}
+
+.prose ol {
+  list-style: decimal;
+}
+
+.prose li + li {
+  margin-top: var(--space-2);
+}
+
+.prose blockquote {
+  border-left: 3px solid var(--color-quote-border);
+  padding-left: var(--space-4);
+  color: var(--color-text-muted);
+  font-style: italic;
+}
+
+.prose code {
+  font-family: var(--font-mono);
+  background: var(--color-code-bg);
+  padding: 0.15em 0.4em;
+  border-radius: 4px;
+  font-size: 0.9em;
+}
+
+.prose pre {
+  background: var(--color-code-bg);
+  padding: var(--space-4);
+  border-radius: 8px;
+  overflow-x: auto;
+}
+
+.prose pre code {
+  background: none;
+  padding: 0;
+  font-size: 0.9em;
+}
+
+.prose hr {
+  border: none;
+  border-top: 1px solid var(--color-border);
+}
+
+.prose img {
+  border-radius: 8px;
+}
+
+.prose figcaption {
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+  margin-top: var(--space-2);
+}

@@ -1,0 +1,32 @@
+/* Article-page-specific tweaks not covered by layout.css / typography.css / components.css. */
+
+.article-header {
+  max-width: var(--prose-max-width);
+  margin-inline: auto;
+  padding-top: var(--space-6);
+}
+
+.article-header__category {
+  margin-bottom: var(--space-3);
+}
+
+.article-header__title {
+  font-size: clamp(1.9rem, 4vw, 2.6rem);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.15;
+}
+
+@media (min-width: 1024px) {
+  .article-header {
+    max-width: calc(260px + var(--space-5) + var(--prose-max-width));
+    padding-left: calc(260px + var(--space-5));
+  }
+}
+
+@media (min-width: 1600px) {
+  .article-header {
+    max-width: var(--prose-max-width);
+    padding-left: 0;
+  }
+}
