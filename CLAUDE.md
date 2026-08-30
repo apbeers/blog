@@ -22,7 +22,12 @@ structural changes. Summary of the non-negotiable rules:
 - **Local preview always runs on port 8000.** `.claude/launch.json`'s `blog-preview` config
   attaches to an already-running server at `http://localhost:8000` rather than launching its own
   — before calling `preview_start`, make sure something is actually serving the repo on 8000
-  (check, or start one yourself with `python3 -m http.server 8000` via Bash, running in the
-  background). Do not change that config back to auto-launching a server on some other port —
-  that previously caused the integrated browser to silently preview a different, empty server
-  than the one anyone was actually looking at.
+  (check, or start one yourself with `python3 serve.py` via Bash, running in the background).
+  Do not change that config back to auto-launching a server on some other port — that previously
+  caused the integrated browser to silently preview a different, empty server than the one anyone
+  was actually looking at.
+- **Serve with `serve.py`, not `python3 -m http.server`.** The stock server answers
+  `If-Modified-Since` with `304 Not Modified`, so edited `.js`/`.css`/`.md` files keep rendering
+  from the browser cache and you waste time debugging a stale file. `serve.py` (standard library
+  only) disables caching. If you ever find yourself adding `?cb=<timestamp>` to bust a cache,
+  a stock server is running — restart it with `serve.py` instead.

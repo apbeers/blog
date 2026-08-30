@@ -111,13 +111,25 @@ shows a banner explaining this and a "could not load" message instead of the rea
 banner only appears under `file://` and is never visible on the deployed site (GitHub Pages
 always serves over `https://`).
 
-Any static file server works, e.g. from the repo root:
+Use the repo's dev server, from the repo root:
 
 ```bash
-python3 -m http.server 8000
+python3 serve.py
 ```
 
 Then open `http://localhost:8000/`.
+
+[`serve.py`](../serve.py) is a ~90-line standard-library script — nothing to install. It serves
+the same static files as `python3 -m http.server`, but with HTTP caching disabled. That matters
+more than it sounds: the stock server stamps responses with `Last-Modified` and answers the
+browser's `If-Modified-Since` with `304 Not Modified`, so after editing a `.js`, `.css` or `.md`
+file you'll often keep seeing the *previous* version and end up debugging a file that no longer
+exists on disk. `serve.py` sends `Cache-Control: no-store` and never issues a 304, so a plain
+reload always shows what's actually on disk.
+
+Any other static file server works too (including `python3 -m http.server 8000`) — just expect to
+hard-reload constantly. Only ever use `serve.py` locally; GitHub Pages serves the real site and
+should cache normally.
 
 **Port 8000 specifically matters if you're using Claude Code's integrated browser preview.**
 [`.claude/launch.json`](../.claude/launch.json)'s `blog-preview` config is set to *attach* to an
