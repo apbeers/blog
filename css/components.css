@@ -165,7 +165,9 @@
 }
 
 .tool-panel--filter {
-  min-width: min(520px, 78vw);
+  min-width: 350px;
+  width: max-content;
+  max-width: min(520px, 78vw);
 }
 
 .tool-panel__groups {
