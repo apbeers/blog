@@ -1,7 +1,12 @@
 # This repo: a vanilla static blog
 
 Full guidelines: [.github/CONTRIBUTING.md](.github/CONTRIBUTING.md) — read it before making
-structural changes. Summary of the non-negotiable rules:
+structural changes. **Before adding or changing any UI, read
+[.github/DESIGN.md](.github/DESIGN.md)** — it defines the colors, spacing, type and component
+patterns, so new features look like they belong. The rule it exists to enforce: never write a raw
+color, always use a `var(--color-…)` token, or dark mode silently breaks.
+
+Summary of the non-negotiable rules:
 
 - **No third-party libraries, no build step.** Raw HTML/CSS/JS only, hosted as-is on GitHub Pages.
 - **Posts are Markdown**, parsed into HTML in the browser at load time
