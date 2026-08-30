@@ -78,14 +78,21 @@
         setActive(lastHeadingId);
         return;
       }
-      const referenceLine = getStickyOffset() + 4;
+      const triggerLine = getStickyOffset() + 16;
       let current = null;
       for (const h of headings) {
-        if (h.getBoundingClientRect().top <= referenceLine) {
+        const top = h.getBoundingClientRect().top;
+        // If heading is above trigger line (has scrolled past sticky header), mark it as current
+        if (top < triggerLine) {
           current = h.id;
         } else {
+          // Stop checking once we hit a heading below the trigger line
           break;
         }
+      }
+      // If no heading has scrolled past yet, highlight the first one
+      if (!current && headings.length) {
+        current = headings[0].id;
       }
       setActive(current);
     }
@@ -127,7 +134,11 @@
       if (smooth && "onscrollend" in window) {
         window.addEventListener("scrollend", resume, { once: true });
       } else {
-        setTimeout(resume, smooth ? 600 : 50);
+        // Use longer timeout for smooth scrolls to account for animation duration
+        // Then use RAF to ensure DOM has settled before re-enabling scroll updates
+        setTimeout(() => {
+          requestAnimationFrame(resume);
+        }, smooth ? 800 : 50);
       }
     }
 
