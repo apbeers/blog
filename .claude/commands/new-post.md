@@ -12,10 +12,11 @@ The user's argument, if given, is a rough working title: $ARGUMENTS
 
 ## What this repo needs from you
 
-This is a static, dependency-free blog (no build step, raw HTML/CSS/JS). Posts are written by
-hand in Markdown; nothing about the article's prose is ever auto-generated. **A post is a single
-Markdown file — there is no accompanying HTML file.** Your job here is only scaffolding: creating
-that file and the index entries — never writing the article body for them.
+This is a static, dependency-free blog (no build step, raw HTML/CSS/JS). Posts are Markdown files,
+hand-written or AI-generated. **A post is a single Markdown file — there is no accompanying HTML
+file.** Your job here is scaffolding: creating that file and the index entries. If the user asks
+you to draft the article body too, you may — otherwise leave it as a placeholder for them to fill
+in.
 
 ## Step 1 — gather the frontmatter fields
 
@@ -45,8 +46,8 @@ own parser strips quotes safely either way.
 Create `posts/<category>/<slug>.md` (make the category folder if it doesn't exist yet), starting
 from [`templates/post-template.md`](../../templates/post-template.md). Fill in the frontmatter
 with the exact values gathered above. Leave the body as a minimal placeholder (e.g. the
-template's own placeholder heading) — the human author writes the real content afterward. Do not
-draft article prose for them.
+template's own placeholder heading) unless the user has asked you to draft the article content —
+in that case, write it in directly.
 
 That's the entire post. There is no HTML file to create or fill in — every post is viewed
 through the single shared `post.html` page (`post.html?category=<category>&slug=<slug>`), which
@@ -75,7 +76,8 @@ the post date.
 ## Step 4 — hand off
 
 Tell the user:
-- Where the new `.md` file is, and that they should write the article body there by hand
+- Where the new `.md` file is, and (if the body is still a placeholder) that they should fill in
+  the article body there — by hand or with further AI assistance
   (Markdown: `##`/`###` headings auto-populate the table of contents, standard
   link/image/list/code syntax).
 - Where to put any images: `assets/posts/<slug>/`, referenced from the post as

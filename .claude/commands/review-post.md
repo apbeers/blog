@@ -45,11 +45,11 @@ Read `posts/<category>/<slug>.md`.
      code, links, images, lists, blockquotes, fenced code blocks, horizontal rules — nothing
      fancier, e.g. no tables, no footnotes).
 
-4. **Editorial pass** — clarity, structure, tone, grammar. This blog's whole premise is that
-   posts are genuinely human-written, not AI-drafted. Your job is to **comment and suggest**, not
-   to silently rewrite the author's voice. Point out specific sentences/paragraphs and why they're
-   unclear or could be tightened; propose alternate phrasing as suggestions the author can accept
-   or reject. Never replace large sections of the body wholesale without asking first.
+4. **Editorial pass** — clarity, structure, tone, grammar. Posts may be hand-written or
+   AI-generated. Your job is to **comment and suggest**, not to silently rewrite the author's
+   voice. Point out specific sentences/paragraphs and why they're unclear or could be tightened;
+   propose alternate phrasing as suggestions the author can accept or reject. Never replace large
+   sections of the body wholesale without asking first.
 
 ## Output
 

@@ -1,9 +1,9 @@
 # Contributing to this blog
 
 This is a static blog with **no build step and no third-party libraries** — raw HTML, CSS, and
-JavaScript only, hosted on GitHub Pages. Posts are written by hand in Markdown; a small amount of
-JavaScript in the browser parses that Markdown into HTML at page-load time. There is no compiler,
-bundler, or static-site generator involved anywhere in this repo.
+JavaScript only, hosted on GitHub Pages. Posts are Markdown files, hand-written or AI-generated; a
+small amount of JavaScript in the browser parses that Markdown into HTML at page-load time. There
+is no compiler, bundler, or static-site generator involved anywhere in this repo.
 
 If you're using Claude Code, the easiest way to work in this repo is via the slash commands
 described below — they work correctly even if this is the first time you've opened this repo.
@@ -88,9 +88,9 @@ Then use `/review-post` for an editorial pass, and `/publish-post` when it's rea
 
 ## Style
 
-Write posts yourself. This blog exists specifically so that the writing is human — the tooling
-here handles folder scaffolding and metadata, never the prose. `/review-post` will comment on
-clarity and structure but will not rewrite your voice wholesale without asking first.
+Posts can be written by hand or drafted with AI assistance — either is fine. `/review-post` will
+comment on clarity and structure but will not rewrite the body wholesale without asking first,
+regardless of how the draft originated.
 
 ## Dark mode
 
@@ -130,7 +130,7 @@ server than the one anyone was actually looking at.
 
 ## A note on search/AI-agent indexing
 
-Because content is intentionally hand-written and rendered client-side rather than pre-built,
+Because content is rendered client-side rather than pre-built,
 crawlers that execute JavaScript (Google's indexer does) will see the full rendered article, real
 title, and description — `js/post-render.js` sets all of that at runtime. Crawlers that fetch
 HTML only and never run JavaScript will only see `post.html`'s generic default title/description,
