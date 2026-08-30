@@ -31,7 +31,49 @@
       <h1 class="page-title">Blog</h1>
     </section>
 
-    <div id="filter-tabs" class="filter-tabs" role="tablist" aria-label="Filter posts by category"></div>
+    <div class="list-controls">
+      <div id="filter-tabs" class="filter-tabs" role="tablist" aria-label="Filter posts by category"></div>
+
+      <!-- Filter/Sort menus. Both panels are built by js/posts-index.js: the
+           filter facets are derived from the posts that actually exist, so a
+           facet appears only once there is more than one value to choose. -->
+      <div class="list-tools">
+        <div class="list-tools__item">
+          <button id="filter-toggle" class="list-tools__button" type="button"
+                  aria-expanded="false" aria-controls="filter-panel" aria-haspopup="true">
+            <span>Filter</span>
+            <span id="filter-count" class="list-tools__count" hidden></span>
+            <svg class="list-tools__icon list-tools__icon--open" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <g fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                <line x1="3" y1="8" x2="21" y2="8"/>
+                <line x1="3" y1="16" x2="21" y2="16"/>
+                <circle cx="9" cy="8" r="2.6" fill="var(--color-bg)"/>
+                <circle cx="15" cy="16" r="2.6" fill="var(--color-bg)"/>
+              </g>
+            </svg>
+            <svg class="list-tools__icon list-tools__icon--close" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <g stroke="currentColor" stroke-width="1.7" stroke-linecap="round">
+                <line x1="6" y1="6" x2="18" y2="18"/><line x1="18" y1="6" x2="6" y2="18"/>
+              </g>
+            </svg>
+          </button>
+          <div id="filter-panel" class="tool-panel tool-panel--filter" hidden></div>
+        </div>
+
+        <div class="list-tools__item">
+          <button id="sort-toggle" class="list-tools__button" type="button"
+                  aria-expanded="false" aria-controls="sort-panel" aria-haspopup="true">
+            <span>Sort</span>
+            <svg class="list-tools__icon list-tools__chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+              <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </button>
+          <div id="sort-panel" class="tool-panel" hidden></div>
+        </div>
+      </div>
+    </div>
+
     <div id="post-list" class="post-list"></div>
   </main>
 

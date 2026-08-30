@@ -27,6 +27,220 @@
   color: var(--color-text);
 }
 
+/* Homepage controls row: category tabs on the left, Filter/Sort on the right */
+.list-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-bottom: var(--space-1);
+}
+
+.list-controls .filter-tabs {
+  padding-bottom: 0;
+  margin-bottom: 0;
+}
+
+.list-tools {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  margin-left: auto;
+}
+
+/* Anchors the dropdown panel to its own button */
+.list-tools__item {
+  position: relative;
+}
+
+.list-tools__button {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: none;
+  border: none;
+  padding: var(--space-1) 0;
+  font-size: 0.95rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.list-tools__button:hover {
+  color: var(--color-text-muted);
+}
+
+/* While a panel is open its label recedes, matching the reference design */
+.list-tools__button[aria-expanded="true"] {
+  color: var(--color-text-muted);
+}
+
+.list-tools__icon {
+  display: block;
+  flex-shrink: 0;
+}
+
+/* Filter's icon swaps to an X while its panel is open */
+.list-tools__icon--close {
+  display: none;
+}
+
+#filter-toggle[aria-expanded="true"] .list-tools__icon--open {
+  display: none;
+}
+
+#filter-toggle[aria-expanded="true"] .list-tools__icon--close {
+  display: block;
+}
+
+.list-tools__button[aria-expanded="true"] .list-tools__chevron {
+  transform: rotate(180deg);
+}
+
+.list-tools__chevron {
+  transition: transform 0.15s ease;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .list-tools__chevron {
+    transition: none;
+  }
+}
+
+/* Count of active filters, so a filtered list is never silently filtered.
+   The [hidden] rule has to be explicit: a display declaration would otherwise
+   beat the browser default of [hidden] { display: none }. */
+.list-tools__count[hidden] {
+  display: none;
+}
+
+.list-tools__count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25em;
+  padding: 0 0.35em;
+  border-radius: 999px;
+  background: var(--color-pill-bg-active);
+  color: var(--color-pill-text-active);
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Dropdown panels */
+.tool-panel {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 50;
+  min-width: 240px;
+  padding: var(--space-4);
+  border-radius: 12px;
+  background: var(--color-pill-bg);
+  box-shadow: 0 8px 24px rgb(0 0 0 / 0.10);
+}
+
+.tool-panel[hidden] {
+  display: none;
+}
+
+.tool-panel__option {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  font-size: 1rem;
+  color: var(--color-text);
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.tool-panel__option input {
+  flex-shrink: 0;
+  width: 1.1em;
+  height: 1.1em;
+  margin: 0;
+  accent-color: var(--color-text);
+  cursor: pointer;
+}
+
+.tool-panel--filter {
+  min-width: min(520px, 78vw);
+}
+
+.tool-panel__groups {
+  display: flex;
+  gap: var(--space-6);
+}
+
+.tool-panel__group {
+  flex: 1 1 0;
+  min-width: 0;
+}
+
+.tool-panel__group-title {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+  margin-bottom: var(--space-2);
+}
+
+/* Long facets scroll rather than growing the panel past the viewport */
+.tool-panel__list {
+  max-height: 220px;
+  overflow-y: auto;
+}
+
+.tool-panel__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: var(--space-4);
+  margin-top: var(--space-4);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+
+.tool-panel__action {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: 1rem;
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.tool-panel__action:hover {
+  color: var(--color-text-muted);
+}
+
+.tool-panel__empty {
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* On narrow screens the panels span the controls row instead of hanging off it */
+@media (max-width: 639px) {
+  .list-tools {
+    margin-left: 0;
+  }
+
+  .tool-panel {
+    right: auto;
+    left: 0;
+    min-width: 0;
+    width: max-content;
+    max-width: calc(100vw - 2 * var(--gutter));
+  }
+
+  .tool-panel--filter {
+    min-width: 0;
+  }
+
+  .tool-panel__groups {
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+}
+
 /* Post list (homepage) */
 .post-list {
   display: block;
