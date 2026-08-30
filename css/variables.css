@@ -26,6 +26,9 @@
   --page-max-width: 1400px;
   --prose-max-width: 720px;
   --gutter: 20px;
+  /* Measured from the actual header at runtime by js/sticky-header.js; this
+     is just the pre-measurement fallback so nothing jumps on first paint. */
+  --header-height: 57px;
 
   /* Spacing scale */
   --space-1: 4px;

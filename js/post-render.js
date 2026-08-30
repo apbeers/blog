@@ -23,58 +23,89 @@
     return d.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
   }
 
-  function setupScrollSpy(headings, tocListEl) {
+  // The header (and, on mobile, the TOC toggle bar under it) are sticky, so
+  // both scroll-spy detection and TOC-link jumps need to account for how
+  // much of the viewport's top they cover -- otherwise a heading can end up
+  // hidden behind them right when you jump to it.
+  function getStickyOffset() {
+    const header = document.querySelector(".site-header");
+    const mobileToc = document.getElementById("mobile-toc");
+    let offset = header ? header.offsetHeight : 0;
+    if (mobileToc && getComputedStyle(mobileToc).display !== "none") {
+      offset += mobileToc.offsetHeight;
+    }
+    return offset;
+  }
+
+  function closeMobileToc() {
+    const root = document.getElementById("mobile-toc");
+    const toggleBtn = document.getElementById("mobile-toc-toggle");
+    if (!root || !toggleBtn) return;
+    root.classList.remove("is-open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function setupScrollSpy(headingsList, tocListEls) {
+    const headings = Array.from(headingsList); // querySelectorAll order == document order, relied on below
     const linkByHeadingId = new Map();
-    tocListEl.querySelectorAll("a").forEach((link) => {
-      linkByHeadingId.set(link.getAttribute("href").slice(1), link);
+    headings.forEach((h) => {
+      const links = tocListEls.flatMap((listEl) => Array.from(listEl.querySelectorAll(`a[href="#${h.id}"]`)));
+      linkByHeadingId.set(h.id, links);
     });
 
-    const clearActive = () => {
-      tocListEl.querySelectorAll("a.is-active").forEach((link) => link.classList.remove("is-active"));
-    };
+    // On mobile, the collapsed toggle bar shows the current section's text
+    // in place of the static "On this page" label.
+    const currentLabelEl = document.getElementById("mobile-toc-current");
+    const defaultLabel = currentLabelEl ? currentLabelEl.textContent : "";
 
+    let activeId = null;
     const setActive = (id) => {
-      clearActive();
-      const link = linkByHeadingId.get(id);
-      if (link) link.classList.add("is-active");
+      if (id === activeId) return;
+      activeId = id;
+      tocListEls.forEach((listEl) => {
+        listEl.querySelectorAll("a.is-active").forEach((link) => link.classList.remove("is-active"));
+      });
+      if (!id) {
+        if (currentLabelEl) currentLabelEl.textContent = defaultLabel;
+        return;
+      }
+      const links = linkByHeadingId.get(id) || [];
+      links.forEach((link) => link.classList.add("is-active"));
+      if (currentLabelEl && links.length) currentLabelEl.textContent = links[0].textContent;
     };
 
-    // The observer's trigger zone is the top 30% of the viewport (see
-    // rootMargin below). The last heading may never reach it if there isn't
-    // enough content after it to scroll further, and scrolling back above the
-    // first heading leaves nothing intersecting -- both are handled as
-    // explicit edge cases that take priority over whatever the observer last
-    // reported, since an earlier heading can otherwise stay "intersecting"
-    // and stomp these states.
     const lastHeadingId = headings[headings.length - 1].id;
-    const isAtBottom = () =>
-      window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
-    const isBeforeFirstHeading = () => headings[0].getBoundingClientRect().top > window.innerHeight * 0.3;
 
-    const applyEdgeCases = () => {
-      if (isAtBottom()) {
+    // Deliberately not IntersectionObserver: with several headings crossing
+    // the trigger line within one scroll, its batched entries can arrive out
+    // of document order, letting the wrong one win. A direct geometric scan
+    // -- the last heading that has scrolled past the line below the sticky
+    // bars -- is simple and unambiguous.
+    function update() {
+      if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
         setActive(lastHeadingId);
-        return true;
+        return;
       }
-      if (isBeforeFirstHeading()) {
-        clearActive();
-        return true;
+      const referenceLine = getStickyOffset() + 4;
+      let current = null;
+      for (const h of headings) {
+        if (h.getBoundingClientRect().top <= referenceLine) {
+          current = h.id;
+        } else {
+          break;
+        }
       }
-      return false;
-    };
+      setActive(current);
+    }
 
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (applyEdgeCases()) return;
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) setActive(entry.target.id);
-        });
-      },
-      { rootMargin: "0px 0px -70% 0px", threshold: 0 }
-    );
+    update();
 
-    headings.forEach((h) => observer.observe(h));
-
+    // A click-triggered jump (see jumpTo below) animates the scroll over
+    // several hundred ms; it sets the active state itself immediately rather
+    // than waiting for that scroll to settle, so the natural scroll handler
+    // is suppressed for the duration to avoid it flickering through
+    // whatever headings pass by mid-flight.
+    let suppressed = false;
     let ticking = false;
     window.addEventListener(
       "scroll",
@@ -82,29 +113,95 @@
         if (ticking) return;
         ticking = true;
         requestAnimationFrame(() => {
-          applyEdgeCases();
+          if (!suppressed) update();
           ticking = false;
         });
       },
       { passive: true }
     );
+
+    function jumpTo(id, { smooth = true } = {}) {
+      const target = document.getElementById(id);
+      if (!target) return;
+      suppressed = true;
+      setActive(id);
+      const top = target.getBoundingClientRect().top + window.scrollY - getStickyOffset() - 16;
+      window.scrollTo({ top, behavior: smooth ? "smooth" : "auto" });
+
+      const resume = () => {
+        suppressed = false;
+        update();
+      };
+      if (smooth && "onscrollend" in window) {
+        window.addEventListener("scrollend", resume, { once: true });
+      } else {
+        setTimeout(resume, smooth ? 600 : 50);
+      }
+    }
+
+    return { setActive, jumpTo };
   }
 
-  function buildToc(tocListEl, contentEl) {
+  function setupMobileToggle() {
+    const root = document.getElementById("mobile-toc");
+    const toggleBtn = document.getElementById("mobile-toc-toggle");
+    if (!root || !toggleBtn) return;
+
+    toggleBtn.addEventListener("click", () => {
+      const isOpen = root.classList.toggle("is-open");
+      toggleBtn.setAttribute("aria-expanded", String(isOpen));
+    });
+
+    document.addEventListener("click", (e) => {
+      if (!root.contains(e.target)) closeMobileToc();
+    });
+  }
+
+  function buildToc(tocListEls, contentEl) {
     const headings = contentEl.querySelectorAll("h2, h3");
+    const mobileToc = document.getElementById("mobile-toc");
     if (!headings.length) {
-      const wrapper = tocListEl.closest("#post-toc");
-      if (wrapper) wrapper.style.display = "none";
+      tocListEls.forEach((listEl) => {
+        const wrapper = listEl.closest("#post-toc");
+        if (wrapper) wrapper.style.display = "none";
+      });
+      if (mobileToc) mobileToc.style.display = "none";
       return;
     }
     headings.forEach((h) => {
-      const link = document.createElement("a");
-      link.href = `#${h.id}`;
-      link.textContent = h.textContent;
-      if (h.tagName === "H3") link.classList.add("is-sub");
-      tocListEl.appendChild(link);
+      tocListEls.forEach((listEl) => {
+        const link = document.createElement("a");
+        link.href = `#${h.id}`;
+        link.textContent = h.textContent;
+        if (h.tagName === "H3") link.classList.add("is-sub");
+        listEl.appendChild(link);
+      });
     });
-    setupScrollSpy(headings, tocListEl);
+
+    const scrollSpy = setupScrollSpy(headings, tocListEls);
+
+    // Intercept TOC-link clicks (desktop sidebar and mobile dropdown alike)
+    // to scroll with the sticky-offset correction above, instead of the
+    // browser's default anchor jump, which doesn't know about the sticky
+    // header/toggle bar and would land the heading half-hidden behind them.
+    tocListEls.forEach((listEl) => {
+      listEl.addEventListener("click", (e) => {
+        const link = e.target.closest("a");
+        if (!link) return;
+        e.preventDefault();
+        const id = link.getAttribute("href").slice(1);
+        closeMobileToc();
+        scrollSpy.jumpTo(id);
+        history.pushState(null, "", `#${id}`);
+      });
+    });
+
+    if (window.location.hash) {
+      const id = window.location.hash.slice(1);
+      requestAnimationFrame(() => scrollSpy.jumpTo(id, { smooth: false }));
+    }
+
+    setupMobileToggle();
   }
 
   function updateHeadMeta({ title, summary, date, authorName, url }) {
@@ -149,7 +246,9 @@
     const titleEl = document.getElementById("post-title");
     const bylineEl = document.getElementById("post-byline");
     const contentEl = document.getElementById("post-content");
-    const tocListEl = document.getElementById("post-toc-list");
+    const tocListEls = [document.getElementById("post-toc-list"), document.getElementById("mobile-toc-list")].filter(
+      Boolean
+    );
     if (!contentEl) return;
 
     const params = new URLSearchParams(window.location.search);
@@ -198,7 +297,7 @@
       });
 
       contentEl.innerHTML = window.BlogMarkdown.render(body);
-      if (tocListEl) buildToc(tocListEl, contentEl);
+      if (tocListEls.length) buildToc(tocListEls, contentEl);
     } catch (err) {
       console.error(err);
       const hint =

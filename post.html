@@ -42,6 +42,16 @@
 <body data-root="">
   <div data-include="header"></div>
 
+  <div id="mobile-toc" class="mobile-toc">
+    <button id="mobile-toc-toggle" class="mobile-toc__toggle" type="button" aria-expanded="false" aria-controls="mobile-toc-list">
+      <span id="mobile-toc-current" class="mobile-toc__current">On this page</span>
+      <svg class="mobile-toc__chevron" viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+        <path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+    </button>
+    <nav id="mobile-toc-list" class="toc__list mobile-toc__list"></nav>
+  </div>
+
   <main class="container article-layout">
     <aside id="post-toc" class="article-toc">
       <div class="toc__title">On this page</div>
@@ -68,6 +78,7 @@
 
   <script src="js/dev-server-notice.js"></script>
   <script src="js/include-partials.js"></script>
+  <script src="js/sticky-header.js"></script>
   <script src="js/theme-toggle.js"></script>
   <script src="js/frontmatter.js"></script>
   <script src="js/markdown.js"></script>
