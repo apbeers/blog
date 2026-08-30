@@ -27,9 +27,20 @@
 }
 
 .site-header__brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
   font-weight: 600;
   font-size: 1.1rem;
   letter-spacing: -0.01em;
+}
+
+.site-header__brand img {
+  display: block;
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 4px;
 }
 
 .site-header__right {
