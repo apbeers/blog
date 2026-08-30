@@ -14,5 +14,29 @@
     "summary": "A contributor's guide to this blog: no build step, Markdown posts, and how the pieces fit together.",
     "category": "milestone",
     "author": "abeers"
+  },
+  {
+    "slug": "introducing-claude-blog",
+    "title": "Introducing Claude Blog",
+    "date": "2026-08-30",
+    "summary": "A zero-dependency static blog for GitHub Pages, designed for AI-assisted workflows.",
+    "category": "copy-this-idea",
+    "author": "abeers"
+  },
+  {
+    "slug": "claude-blog-architecture",
+    "title": "Claude Blog Architecture",
+    "date": "2026-08-30",
+    "summary": "Deep dive into the design decisions behind Claude Blog: zero dependencies, no build step, browser-side markdown parsing.",
+    "category": "copy-this-idea",
+    "author": "abeers"
+  },
+  {
+    "slug": "using-claude-blog",
+    "title": "How to Use Claude Blog",
+    "date": "2026-08-30",
+    "summary": "Complete guide to using Claude Blog: write posts, manage categories, customize design—all through conversation with Claude.",
+    "category": "copy-this-idea",
+    "author": "abeers"
   }
 ]

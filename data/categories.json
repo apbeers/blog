@@ -4,5 +4,6 @@
   "milestone": { "label": "Milestone" },
   "release": { "label": "Release" },
   "company": { "label": "Company" },
-  "security": { "label": "Security" }
+  "security": { "label": "Security" },
+  "copy-this-idea": { "label": "Copy This Idea" }
 }

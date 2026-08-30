@@ -130,12 +130,19 @@
   }
 
   .article-toc {
-    left: auto;
-    right: var(--gutter);
+    left: calc(50vw - 700px + var(--gutter));
+    right: auto;
   }
 
   .article-main {
     grid-column: 1;
+  }
+}
+
+/* Very wide screens: adjust TOC alignment to stay with container */
+@media (min-width: 1400px) {
+  .article-toc {
+    left: calc(50vw - 700px + var(--gutter));
   }
 }
 
