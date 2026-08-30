@@ -136,3 +136,137 @@ h4 {
   color: var(--color-text-muted);
   margin-top: var(--space-2);
 }
+
+.prose del {
+  text-decoration: line-through;
+  color: var(--color-text-muted);
+}
+
+/* Keep super/subscripts from stretching the line they sit on. */
+.prose sup,
+.prose sub {
+  font-size: 0.75em;
+  line-height: 0;
+  position: relative;
+  vertical-align: baseline;
+}
+
+.prose sup {
+  top: -0.5em;
+}
+
+.prose sub {
+  bottom: -0.25em;
+}
+
+.prose abbr {
+  text-decoration: underline dotted;
+  text-underline-offset: 3px;
+  cursor: help;
+}
+
+/* Task lists: no bullet, checkbox sits on the text baseline */
+.prose ul.task-list {
+  list-style: none;
+  padding-left: 0;
+}
+
+.prose .task-list-item input[type="checkbox"] {
+  margin-right: var(--space-1);
+  vertical-align: middle;
+  accent-color: var(--color-text);
+}
+
+/* Definition lists */
+.prose dt {
+  font-weight: 600;
+  margin-top: var(--space-3);
+}
+
+.prose dd {
+  margin-left: var(--space-4);
+  color: var(--color-text-muted);
+}
+
+/* Tables — the wrapper scrolls so a wide table never widens the page */
+.prose .table-wrap {
+  overflow-x: auto;
+}
+
+.prose table {
+  border-collapse: collapse;
+  width: 100%;
+  font-size: 0.95em;
+}
+
+.prose th,
+.prose td {
+  border: 1px solid var(--color-border);
+  padding: var(--space-2) var(--space-3);
+  text-align: left;
+}
+
+.prose th {
+  background: var(--color-table-header-bg);
+  font-weight: 600;
+}
+
+/* Admonitions — a blockquote opened with "note:", "> [!WARNING]", etc. */
+.prose .admonition {
+  background: var(--color-admonition-bg);
+  border-left: 3px solid var(--admonition-accent, var(--color-border-strong));
+  border-radius: 0 8px 8px 0;
+  padding: var(--space-3) var(--space-4);
+}
+
+.prose .admonition > * + * {
+  margin-top: var(--space-3);
+}
+
+.prose .admonition-title {
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--admonition-accent, var(--color-text-muted));
+}
+
+.prose .admonition-note { --admonition-accent: var(--color-note); }
+.prose .admonition-info { --admonition-accent: var(--color-info); }
+.prose .admonition-tip { --admonition-accent: var(--color-tip); }
+.prose .admonition-important { --admonition-accent: var(--color-important); }
+.prose .admonition-warning { --admonition-accent: var(--color-warning); }
+.prose .admonition-caution { --admonition-accent: var(--color-caution); }
+.prose .admonition-danger { --admonition-accent: var(--color-danger); }
+
+/* Footnotes */
+.prose .footnote-ref a {
+  text-decoration: none;
+  padding: 0 0.1em;
+}
+
+.prose .footnotes {
+  margin-top: var(--space-6);
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.prose .footnotes hr {
+  margin-bottom: var(--space-4);
+}
+
+.prose .footnotes ol {
+  padding-left: 1.2em;
+}
+
+.prose .footnote-backref {
+  text-decoration: none;
+  margin-left: 0.25em;
+}
+
+/* Loose list items and admonitions hold real blocks, so they need the same
+   between-block rhythm .prose gives its own direct children. */
+.prose li > * + *,
+.prose dd > * + * {
+  margin-top: var(--space-3);
+}

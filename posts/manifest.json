@@ -38,5 +38,13 @@
     "summary": "Complete guide to using Claude Blog: write posts, manage categories, customize design—all through conversation with Claude.",
     "category": "copy-this-idea",
     "author": "abeers"
+  },
+  {
+    "slug": "markdown-features-test",
+    "title": "Markdown Features Test",
+    "date": "2026-08-30",
+    "summary": "Every Markdown feature this blog supports, rendered live by the browser-side parser.",
+    "category": "copy-this-idea",
+    "author": "abeers"
   }
 ]
