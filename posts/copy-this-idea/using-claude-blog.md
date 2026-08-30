@@ -4,6 +4,7 @@ date: 2026-08-30
 author: abeers
 category: copy-this-idea
 slug: using-claude-blog
+summary: Complete guide to using Claude Blog: write posts, manage categories, customize design—all through conversation with Claude.
 ---
 
 # How to Use Claude Blog: AI-Assisted Content Creation

@@ -14,6 +14,10 @@ structural changes. Summary of the non-negotiable rules:
 - Categories and authors are shared registries: `data/categories.json`, `data/authors.json`.
   Post frontmatter references them by id, and a post's category id must match the folder
   (`posts/<category>/`) it lives in.
+- **Frontmatter is the single source of truth for post metadata.** `posts/manifest.json` and
+  `sitemap.xml` are generated from it by `python3 tools/sync.py` — never hand-edit them. Run
+  `python3 tools/sync.py --check` to verify (it also validates frontmatter, category/folder
+  agreement, and registry ids); run it without `--check` to regenerate.
 - Slash commands for the common workflows live in `.claude/commands/`: `/new-post`,
   `/review-post`, `/publish-post`. Prefer them over ad hoc edits so the manifest/shell/sitemap
   stay in sync.

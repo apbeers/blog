@@ -4,6 +4,7 @@ date: 2026-08-30
 author: abeers
 category: copy-this-idea
 slug: claude-blog-architecture
+summary: Deep dive into the design decisions behind Claude Blog: zero dependencies, no build step, browser-side markdown parsing.
 ---
 
 # Claude Blog Architecture: How We Built a Zero-Dependency Blogging Platform

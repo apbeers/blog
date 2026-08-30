@@ -4,6 +4,7 @@ date: 2026-08-30
 author: abeers
 category: copy-this-idea
 slug: introducing-claude-blog
+summary: A zero-dependency static blog for GitHub Pages, designed for AI-assisted workflows.
 ---
 
 # Introducing Claude Blog: A Static Blog for the AI Era

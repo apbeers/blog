@@ -84,7 +84,25 @@ Use `/new-post` in Claude Code, or do it by hand:
 4. Add a `<url>` entry to `sitemap.xml` for
    `post.html?category=<category>&slug=<slug>`.
 
-Then use `/review-post` for an editorial pass, and `/publish-post` when it's ready to merge.
+Then run `python3 tools/sync.py` to rebuild the derived indexes, use `/review-post` for an
+editorial pass, and `/publish-post` when it's ready to merge.
+
+## Post metadata has one source of truth
+
+A post's frontmatter is authoritative. [`posts/manifest.json`](../posts/manifest.json) and
+[`sitemap.xml`](../sitemap.xml) are **generated** from it — they exist only because a static site
+can't list a directory at runtime. Don't hand-edit either one:
+
+```bash
+python3 tools/sync.py           # rebuild both from the posts on disk
+python3 tools/sync.py --check   # report drift without changing anything (exit 1 if any)
+```
+
+`--check` also validates each post: required frontmatter present, category matching the folder,
+category and author ids resolving against the registries in `data/`, `YYYY-MM-DD` dates, and the
+slug matching the filename. This is worth running before publishing — the three files were
+previously kept in step by hand and drifted (the sitemap once sat four posts behind, and three
+posts had a summary in the manifest that appeared nowhere in their frontmatter).
 
 ## Style
 
