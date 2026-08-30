@@ -247,6 +247,7 @@
   async function init() {
     const categoryEl = document.getElementById("post-category");
     const titleEl = document.getElementById("post-title");
+    const tocTitleEl = document.getElementById("post-toc-title");
     const bylineEl = document.getElementById("post-byline");
     const contentEl = document.getElementById("post-content");
     const tocListEls = [document.getElementById("post-toc-list"), document.getElementById("mobile-toc-list")].filter(
@@ -283,6 +284,10 @@
 
       if (categoryEl) categoryEl.textContent = category.label;
       if (titleEl) titleEl.textContent = data.title || "";
+      // The sidebar TOC is headed by the article's own title rather than a
+      // generic "On this page" label. The mobile bar keeps its own label,
+      // since scroll-spy overwrites it with the current section.
+      if (tocTitleEl && data.title) tocTitleEl.textContent = data.title;
       if (bylineEl) {
         bylineEl.innerHTML = `
           <span class="byline__author">${window.BlogMarkdown.escapeHtml(author.name)}</span>

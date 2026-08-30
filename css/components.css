@@ -197,10 +197,11 @@
 }
 
 /* Table of contents */
+/* Holds the article's own title (set by js/post-render.js), so it reads as a
+   name rather than the uppercase label slot this used to be -- the wide
+   letter-spacing that went with the caps comes off with them. */
 .toc__title {
   font-size: 0.8rem;
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
   color: var(--color-text-muted);
   margin-bottom: var(--space-2);
 }
