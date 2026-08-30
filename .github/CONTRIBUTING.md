@@ -112,6 +112,15 @@ python3 -m http.server 8000
 
 Then open `http://localhost:8000/`.
 
+**Port 8000 specifically matters if you're using Claude Code's integrated browser preview.**
+[`.claude/launch.json`](../.claude/launch.json)'s `blog-preview` config is set to *attach* to an
+already-running server at `http://localhost:8000` rather than launch its own — so start the
+server above yourself first, then ask Claude to preview it. If nothing is listening on 8000 yet,
+the preview will fail to attach rather than silently opening some other port. Don't change that
+config to launch its own process on a different port again — a previous version did exactly that
+(auto-launching on 8123), which meant the integrated browser was quietly previewing a different
+server than the one anyone was actually looking at.
+
 ## A note on search/AI-agent indexing
 
 Because content is intentionally hand-written and rendered client-side rather than pre-built,

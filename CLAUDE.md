@@ -19,3 +19,10 @@ structural changes. Summary of the non-negotiable rules:
   stay in sync.
 - `/publish-post` merges to `main` — always confirm with the user before pushing or merging,
   every time, regardless of prior approvals in this session.
+- **Local preview always runs on port 8000.** `.claude/launch.json`'s `blog-preview` config
+  attaches to an already-running server at `http://localhost:8000` rather than launching its own
+  — before calling `preview_start`, make sure something is actually serving the repo on 8000
+  (check, or start one yourself with `python3 -m http.server 8000` via Bash, running in the
+  background). Do not change that config back to auto-launching a server on some other port —
+  that previously caused the integrated browser to silently preview a different, empty server
+  than the one anyone was actually looking at.
