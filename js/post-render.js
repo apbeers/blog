@@ -129,17 +129,16 @@
 
       const resume = () => {
         suppressed = false;
-        update();
+        // Don't immediately call update() — wait for the next scroll event.
+        // The jumpTo already set the correct active section, and calling update()
+        // right away can cause it to pick the wrong section if scroll hasn't settled.
       };
       if (smooth && "onscrollend" in window) {
         window.addEventListener("scrollend", resume, { once: true });
       } else {
         // Use longer timeout for smooth scrolls to account for animation duration
         // Smooth scroll distance scales with scroll distance, so use generous timeout
-        // Then use RAF to ensure DOM has settled before re-enabling scroll updates
-        setTimeout(() => {
-          requestAnimationFrame(resume);
-        }, smooth ? 1200 : 50);
+        setTimeout(resume, smooth ? 1500 : 50);
       }
     }
 
