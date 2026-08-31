@@ -219,17 +219,18 @@
   font-size: 0.95rem;
 }
 
-/* On narrow screens the panels span the controls row instead of hanging off it */
+/* On narrow screens keep the panel inside the viewport even though its trigger
+   may be near the right edge of the controls row. */
 @media (max-width: 639px) {
   .list-tools {
     margin-left: 0;
   }
 
   .tool-panel {
-    right: auto;
-    left: 0;
+    right: 0;
+    left: auto;
     min-width: 0;
-    width: max-content;
+    width: min(350px, calc(100vw - 2 * var(--gutter)));
     max-width: calc(100vw - 2 * var(--gutter));
   }
 
